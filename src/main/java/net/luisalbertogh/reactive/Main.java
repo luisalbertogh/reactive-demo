@@ -3,11 +3,9 @@
  */
 package net.luisalbertogh.reactive;
 
-import java.util.Arrays;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
+import net.luisalbertogh.reactive.examples.MoreReactive;
+import net.luisalbertogh.reactive.examples.SimpleReactive;
+import net.luisalbertogh.reactive.examples.SingleReactive;
 
 /**
  * @author loga
@@ -30,71 +28,14 @@ public class Main {
         System.out.println("More reactive");
         MoreReactive mr = new MoreReactive();
         mr.run();
-    }
-}
-
-/**
- * Simple RxJava example.
- * @author loga
- *
- */
-class SimpleReactive {
-    public void run(){
-        /* Observable on string collection */
-        Observable<String> obs = Observable.fromArray("foo","bar","foobar");
+        mr.disposeObserver();
         
-        /* Simple suscriber with lambda expression */
-        obs.subscribe(s -> System.out.println(s));
-    }
-}
-
-/**
- * Other reactive example.
- * @author loga
- *
- */
-class MoreReactive {
-    @SuppressWarnings("unused")
-    public void run(){
-        /* Observable on string collection */
-        Observable<String> obs = Observable.create(emitter -> {
-            try {
-                List<String> strings = getStrings();
-                for (String s : strings) {
-                    emitter.onNext(s);
-                }
-                emitter.onComplete();
-            } catch (Exception e) {
-                emitter.onError(e);
-            }
-        });
+        System.out.println("");
         
-        /* Suscriber */
-        DisposableObserver<String> disobs = obs.subscribeWith(new DisposableObserver<String>(){
-
-            @Override
-            public void onComplete() {
-                System.out.println("Finished!");
-            }
-
-            @Override
-            public void onError(Throwable arg0) {
-                System.err.println(arg0.getMessage());
-            }
-
-            @Override
-            public void onNext(String arg0) {
-                System.out.println(arg0);
-            }
-            
-        });
-    }
-    
-    /**
-     * Get strings.
-     * @return
-     */
-    protected List<String> getStrings() {
-        return Arrays.asList("one","two","three");
+        /* Single reactive */
+        System.out.println("Single reactive");
+        SingleReactive slr = new SingleReactive();
+        slr.run();
+        slr.disposeObserver();
     }
 }
